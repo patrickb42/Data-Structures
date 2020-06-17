@@ -1,27 +1,27 @@
 from typing import Optional
 
 class SinglyLinkedList:
-    class Node:
+    class _Node:
         def __init__(self, value):
             self.value = value
-            self.next_node: Optional[Node] = None
+            self.next_node: Optional[SinglyLinkedList._Node] = None
 
     def __init__(self, items=None): # set items to be an optional generic list 
-        self.head: Optional[Node] = None
-        self.tail: Optional[Node] = None
+        self.head: Optional[SinglyLinkedList._Node] = None
+        self.tail: Optional[SinglyLinkedList._Node] = None
 
         if items is not None and len(items) > 0:
             items_iter = iter(items)
-            self.head = self.Node(next(items_iter))
+            self.head = SinglyLinkedList._Node(next(items_iter))
             self.tail = self.head
-            current: Node = self.head
+            current: SinglyLinkedList._Node = self.head
             for item in items_iter:
-                current.next_node = self.Node(item)
+                current.next_node = SinglyLinkedList._Node(item)
                 current = current.next_node
             self.tail = current
 
     def add_to_tail(self, item):
-        self.tail.next_node = Node(item)
+        self.tail.next_node = SinglyLinkedList._Node(item)
         self.tail = self.tail.next_node
 
     def contains(self, needle):
