@@ -4,7 +4,7 @@ class SinglyLinkedList:
     class Node:
         def __init__(self, value):
             self.value = value
-            self.nextNode: Optional[Node] = None
+            self.next_node: Optional[Node] = None
 
     def __init__(self, items=None): # set items to be an optional generic list 
         self.head: Optional[Node] = None
@@ -16,20 +16,20 @@ class SinglyLinkedList:
             self.tail = self.head
             current: Node = self.head
             for item in items_iter:
-                current.nextNode = self.Node(item)
-                current = current.nextNode
+                current.next_node = self.Node(item)
+                current = current.next_node
             self.tail = current
 
     def add_to_tail(self, item):
-        self.tail.nextNode = Node(item)
-        self.tail = self.tail.nextNode
+        self.tail.next_node = Node(item)
+        self.tail = self.tail.next_node
 
     def contains(self, needle):
         return needle in self
 
     def remove_head(self):
         if self.head is not None:
-            self.head = self.head.nextNode
+            self.head = self.head.next_node
 
     def get_max(self):
         return max(self)
@@ -49,7 +49,7 @@ class SinglyLinkedList:
     #                 if self.__current is None:
     #                     raise StopIteration
     #                 self.__next_value = self.__current.value
-    #                 self.__current = self.__current.nextNode
+    #                 self.__current = self.__current.next_node
     #                 return self.__next_value
     #     return SinglyLinkedListIter()
 
@@ -58,13 +58,13 @@ class SinglyLinkedList:
         current = self.head
         while current is not None:
             yield current.value
-            current = current.nextNode
+            current = current.next_node
 
     def __str__(self):
-        result = [item for item in self]
-        return str(result)
+        return str(list(self))
 
 if __name__ == "__main__":
-    thing = SinglyLinkedList([1, 20, 3])
+    thing = SinglyLinkedList([1, 2, 3])
     print(3 in thing)
     print(thing.get_max())
+    print(thing)
