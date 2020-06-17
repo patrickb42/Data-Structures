@@ -1,10 +1,10 @@
 from typing import Optional
 
-class LinkedList:
+class SinglyLinkedList:
     class Node:
         def __init__(self, value):
             self.value = value
-            self.nextNode: Node = None
+            self.nextNode: Optional[Node] = None
 
     def __init__(self, items=None): # set items to be an optional generic list 
         self.head: Optional[Node] = None
@@ -20,21 +20,23 @@ class LinkedList:
                 current = current.nextNode
             self.tail = current
 
-    def add_to_tail(self):
-        pass
+    def add_to_tail(self, item):
+        self.tail.nextNode = Node(item)
+        self.tail = self.tail.nextNode
 
     def contains(self, needle):
-        pass
+        return needle in self
 
     def remove_head(self):
-        pass
+        if self.head is not None:
+            self.head = self.head.nextNode
 
     def get_max(self):
-        pass
+        return max(self)
 
     # here is a long way of making an iterator
     # def __iter__(self):
-    #     owner: LinkedList = self
+    #     owner: SinglyLinkedList = self
     #     class SinglyLinkedListIter:
     #         def __init__(self):
     #             self.__current: Node = owner.head
@@ -61,3 +63,8 @@ class LinkedList:
     def __str__(self):
         result = [item for item in self]
         return str(result)
+
+if __name__ == "__main__":
+    thing = SinglyLinkedList([1, 20, 3])
+    print(3 in thing)
+    print(thing.get_max())
