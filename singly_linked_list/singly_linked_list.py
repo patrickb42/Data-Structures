@@ -46,26 +46,6 @@ class SinglyLinkedList:
     def get_max(self):
         return max(self) if self.length > 0 else None
 
-    # here is a long way of making an iterator
-    # def __iter__(self):
-    #     owner: SinglyLinkedList = self
-    #     class SinglyLinkedListIter:
-    #         def __init__(self):
-    #             self.__current: Node = owner.head
-
-    #         def __iter__(self):
-    #             return self
-
-    #         def __next__(self):
-    #             while True:
-    #                 if self.__current is None:
-    #                     raise StopIteration
-    #                 self.__next_value = self.__current.value
-    #                 self.__current = self.__current.next_node
-    #                 return self.__next_value
-    #     return SinglyLinkedListIter()
-
-    # here is a much shorter way
     def __iter__(self):
         current = self.head
         while current is not None:
