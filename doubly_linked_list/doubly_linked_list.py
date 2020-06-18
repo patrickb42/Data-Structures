@@ -57,10 +57,10 @@ class DoublyLinkedList:
         return self.length
 
     class _Iter:
-        def __init__(self, owner, reversed=False):
+        def __init__(self, owner, iteration_reversed=False):
             self.__owner = owner
-            self.__reversed = reversed
-            self.__current_node: Optional[DoublyLinkedListNode] = owner.head if not reversed else owner.tail
+            self.__iteration_reversed = iteration_reversed
+            self.__current_node: Optional[DoublyLinkedListNode] = owner.head if not self.__iteration_reversed else owner.tail
 
         def __iter__(self):
             return self
@@ -68,7 +68,7 @@ class DoublyLinkedList:
         def __next__(self):
             if self.__current_node is not None:
                 next_value = self.__current_node.value
-                self.__current_node = self.__current_node.next_node if not self.__reversed else self.__current_node.prev_node
+                self.__current_node = self.__current_node.next_node if not self.__iteration_reversed else self.__current_node.prev_node
                 return next_value
             raise StopIteration
 
@@ -76,16 +76,30 @@ class DoublyLinkedList:
         return DoublyLinkedList._Iter(self)
     
     def make_reversed_iter(self):
-        return DoublyLinkedList._Iter(self, reversed=True)
+        return DoublyLinkedList._Iter(self, iteration_reversed=True)
 
     def get(self, index: int):
-        if index >= self.length or index < -self.length:
+        if not self.__is_valid_index(index):
             raise IndexError
-        reversed: self.__should_reverse_search(index)
-        # for
+        iteration_reversed = self.__should_reverse_search(index)
+        normalize_index = self.__normalize_index(index)
+        print(f'index: {index}, normalized_index: {normalize_index} length: {len(self)}, reversed: {iteration_reversed}')
+        for i, value in enumerate(DoublyLinkedList._Iter(self, iteration_reversed)):
+            print(f'i: {i}, value: {value}')
+            if(i == normalize_index):
+                return value
 
-    def __should_reverse_search(self, index):
-        return self.length // 2 > abs(index) if index < 0 else self.length // 2 < index
+    def __should_reverse_search(self, index: int) -> bool:
+        return ((len(self) // 2) <= index) if index >= 0 else (len(self) // 2 > abs(index) - 1)
+    
+    def __is_valid_index(self, index: int):
+        return (index < len(self) and index >= 0) or (abs(index) <= len(self) and index < 0)
+    
+    def __normalize_index(self, index):
+        if self.__should_reverse_search(index):
+            return (len(self) - 1 - index) if index >= 0 else (abs(index) - 1)
+        else:
+            return (index) if index >= 0 else (len(self) + index)
 
     def __str__(self):
         return str(list(self))
@@ -106,7 +120,7 @@ class DoublyLinkedList:
             return_value = self.head.value
             self.head = self.head.next_node
             self.length -= 1
-            self.tail = self.head if self.length < 2 else self.tail
+            self.tail = self.head if len(self) < 2 else self.tail
         return return_value
 
     """Wraps the given value in a Node and inserts it
@@ -130,7 +144,7 @@ class DoublyLinkedList:
             return_value = self.tail.value
             self.tail = self.tail.prev_node
             self.length -= 1
-            self.head = self.tail if self.length < 2 else self.head
+            self.head = self.tail if len(self) < 2 else self.head
         return return_value
 
     """Removes the input node from its current spot in the
@@ -153,6 +167,6 @@ class DoublyLinkedList:
         pass
 
 if __name__ == "__main__":
-    thing = DoublyLinkedList([1, 2, 3])
-    for i in thing.make_reversed_iter():
-        print(i)
+    thing = DoublyLinkedList([10, 20, 30, 40, 50])
+    print(thing.get(1))
+    print(thing.get(-5))
