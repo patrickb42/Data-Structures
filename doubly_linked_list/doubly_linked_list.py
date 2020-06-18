@@ -56,7 +56,7 @@ class DoublyLinkedList:
     def __len__(self):
         return self.length
 
-    class _Iter:
+    class _Node_Iter:
         def __init__(self, owner, iteration_reversed=False):
             self.__owner = owner
             self.__iteration_reversed = iteration_reversed
@@ -65,18 +65,28 @@ class DoublyLinkedList:
         def __iter__(self):
             return self
 
-        def __next__(self):
+        def __next__(self) -> DoublyLinkedListNode:
             if self.__current_node is not None:
-                next_value = self.__current_node.value
+                next_node = self.__current_node
                 self.__current_node = self.__current_node.next_node if not self.__iteration_reversed else self.__current_node.prev_node
-                return next_value
+                return next_node
             raise StopIteration
+    
+    class _Value_Iter(DoublyLinkedList._Node_Iter):
+        def __init__(self, owner, iteration_reversed=False):
+            super().__init__(owner, iteration_reversed)
+        
+        def __iter__(self):
+            return self
+            
+        def __next__(self):
+            return super().__next__().value
 
     def __iter__(self):
-        return DoublyLinkedList._Iter(self)
+        return DoublyLinkedList._Value_Iter(self)
     
     def make_reversed_iter(self):
-        return DoublyLinkedList._Iter(self, iteration_reversed=True)
+        return DoublyLinkedList._Value_Iter(self, iteration_reversed=True)
 
     def get(self, index: int):
         if not self.__is_valid_index(index):
