@@ -74,7 +74,7 @@ class SinglyLinkedList:
 
     def __str__(self) -> str:
         return str(list(self))
-    
+
     def __len__(self) -> int:
         return self.length
 
