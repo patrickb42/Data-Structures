@@ -9,6 +9,7 @@ class SinglyLinkedList:
     def __init__(self, items=None): # set items to be an optional generic list 
         self.head: Optional[SinglyLinkedList._Node] = None
         self.tail: Optional[SinglyLinkedList._Node] = None
+        self.length: int = len(items) if items is not None else 0
 
         if items is not None and len(items) > 0:
             items_iter = iter(items)
@@ -60,8 +61,11 @@ class SinglyLinkedList:
             yield current.value
             current = current.next_node
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(list(self))
+    
+    def __len__(self) -> int:
+        return self.length
 
 if __name__ == "__main__":
     thing = SinglyLinkedList([1, 2, 3])
