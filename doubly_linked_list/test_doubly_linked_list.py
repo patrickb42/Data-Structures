@@ -4,6 +4,7 @@ from doubly_linked_list import DoublyLinkedList, DoublyLinkedListNode
 
 class DoublyLinkedListTests(unittest.TestCase):
     def setUp(self):
+        self.node = DoublyLinkedListNode(1)
         self.dll = DoublyLinkedList([1])
 
     def test_list_remove_from_tail(self):
