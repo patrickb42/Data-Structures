@@ -6,27 +6,29 @@ class DoublyLinkedListNode:
         self.prev_node: Optional[DoublyLinkedListNode] = prev_node
         self.next_node: Optional[DoublyLinkedListNode] = next_node
 
-    """Wrap the given value in a DoublyLinkedListNode and insert it
-    after this node. Note that this node could already
-    have a next_node node it is point to."""
+
     def insert_after(self, value):
+        """Wrap the given value in a DoublyLinkedListNode and insert it
+        after this node. Note that this node could already
+        have a next_node node it is point to."""
         current_next_node = self.next_node
         self.next_node = DoublyLinkedListNode(value, self, current_next_node)
         if current_next_node is not None:
             current_next_node.prev_node = self.next_node
 
-    """Wrap the given value in a Node and insert it
-    before this node. Note that this node could already
-    have a previous node it is point to."""
     def insert_before(self, value):
+        """Wrap the given value in a Node and insert it
+        before this node. Note that this node could already
+        have a previous node it is point to."""
         current_prev_node = self.prev_node
         self.prev_node = DoublyLinkedListNode(value, current_prev_node, self)
         if current_prev_node is not None:
             current_prev_node.next_node = self.prev_node
 
-    """Rearranges this Node's previous and next_node pointers
-    accordingly, effectively deleting this DoublyLinkedListNode."""
+    
     def delete(self):
+        """Rearranges this Node's previous and next_node pointers
+        accordingly, effectively deleting this DoublyLinkedListNode."""
         if self.prev_node is not None:
             self.prev_node.next_node = self.next_node
         if self.next_node is not None:
@@ -60,7 +62,7 @@ class DoublyLinkedList:
     class _Node_Iter:
         def __init__(self, owner, iteration_reversed=False):
             self.__iteration_reversed = iteration_reversed
-            self.__current_node: Optional[DoublyLinkedListNode] = (owner.head) if not self.__iteration_reversed else (owner.tail)
+            self.__current_node: Optional[DoublyLinkedListNode] = (owner.head) if not iteration_reversed else (owner.tail)
 
         def __iter__(self):
             return self
@@ -103,6 +105,7 @@ class DoublyLinkedList:
         return self.__get_node(index).value
 
     def __should_reverse_search(self, index: int) -> bool:
+        return False
         return ((len(self) // 2) <= index) if index >= 0 else (len(self) // 2 > abs(index) - 1)
     
     def __is_valid_index(self, index: int):
@@ -117,10 +120,10 @@ class DoublyLinkedList:
     def __str__(self):
         return str(list(self))
 
-    """Wraps the given value in a Node and inserts it
-    as the new head of the list. Don't forget to handle 
-    the old head node's previous pointer accordingly."""
     def add_to_head(self, value):
+        """Wraps the given value in a Node and inserts it
+        as the new head of the list. Don't forget to handle 
+        the old head node's previous pointer accordingly."""
         if self.head is None:
             self.head = DoublyLinkedListNode(value)
             self.tail = self.head
@@ -130,10 +133,10 @@ class DoublyLinkedList:
         self.length += 1
         self.tail = self.head if len(self) < 2 else self.tail
 
-    """Removes the List's current head node, making the
-    current head's next_node node the new head of the List.
-    Returns the value of the removed Node."""
     def remove_from_head(self):
+        """Removes the List's current head node, making the
+        current head's next_node node the new head of the List.
+        Returns the value of the removed Node."""
         return_value = None
         if self.head is not None:
             return_value = self.head.value
@@ -144,10 +147,10 @@ class DoublyLinkedList:
             self.tail = self.head if len(self) < 2 else self.tail
         return return_value
 
-    """Wraps the given value in a Node and inserts it
-    as the new tail of the list. Don't forget to handle 
-    the old tail node's next_node pointer accordingly."""
     def add_to_tail(self, value):
+        """Wraps the given value in a Node and inserts it
+        as the new tail of the list. Don't forget to handle 
+        the old tail node's next_node pointer accordingly."""
         if self.tail is None:
             self.tail = DoublyLinkedListNode(value)
             self.head = self.tail
@@ -157,10 +160,10 @@ class DoublyLinkedList:
         self.length += 1
 
 
-    """Removes the List's current tail node, making the
-    current tail's previous node the new tail of the List.
-    Returns the value of the removed Node."""
     def remove_from_tail(self):
+        """Removes the List's current tail node, making the
+        current tail's previous node the new tail of the List.
+        Returns the value of the removed Node."""
         return_value = None
         if self.tail is not None:
             return_value = self.tail.value
@@ -171,9 +174,9 @@ class DoublyLinkedList:
             self.head = self.tail if len(self) < 2 else self.head
         return return_value
 
-    """Removes the input node from its current spot in the
-    List and inserts it as the new head node of the List."""
     def move_to_front(self, index: int):
+        """Removes the input node from its current spot in the
+        List and inserts it as the new head node of the List."""
         if len(self) == 1:
             if index != 0:
                 raise IndexError
@@ -192,9 +195,9 @@ class DoublyLinkedList:
         self.head.prev_node = node
         self.head = self.head.prev_node
 
-    """Removes the input node from its current spot in the
-    List and inserts it as the new tail node of the List."""
     def move_to_end(self, index: int):
+        """Removes the input node from its current spot in the
+        List and inserts it as the new tail node of the List."""
         if len(self) == 1:
             if not self.__is_valid_index(index):
                 raise IndexError
@@ -212,9 +215,9 @@ class DoublyLinkedList:
         self.tail.next_node = node
         self.tail = self.tail.next_node
 
-    """Removes a node from the list and handles cases where
-    the node was the head or the tail"""
     def delete(self, index: int):
+        """Removes a node from the list and handles cases where
+        the node was the head or the tail"""
         node = self.__get_node(index)
         if node is self.head:
             self.head = self.head.next_node
@@ -223,21 +226,27 @@ class DoublyLinkedList:
         node.delete()
         self.length -= 1
 
-    """Returns the highest value currently in the list"""
     def get_max(self):
+        """Returns the highest value currently in the list"""
         return max(self)
 
 if __name__ == "__main__":
-    thing = DoublyLinkedList()
-    thing.add_to_tail(1)
-    print(f'head: {thing.head.value}, tail: {thing.tail.value}, length: {len(thing)}, str: {thing}')
-    thing.add_to_head(2)
-    print(f'head: {thing.head.value}, tail: {thing.tail.value}, length: {len(thing)}, str: {thing}')
-    thing.move_to_end(0)
-    print(f'head: {thing.head.value}, tail: {thing.tail.value}, length: {len(thing)}, str: {thing}')
-    thing.move_to_front(-1)
-    print(f'head: {thing.head.value}, tail: {thing.tail.value}, length: {len(thing)}, str: {thing}')
-    thing.remove_from_head()
-    print(f'head: {thing.head.value}, tail: {thing.tail.value}, length: {len(thing)}, str: {thing}')
-    thing.remove_from_tail()
-    print(f'head: {thing.head}, tail: {thing.tail}, length: {len(thing)}, str: {thing}')
+    foo = DoublyLinkedList()
+    foo.add_to_tail(1)
+    print(f'head: {foo.head.value}, tail: {foo.tail.value}, length: {len(foo)}, str: {foo}')
+    foo.add_to_head(2)
+    print(f'head: {foo.head.value}, tail: {foo.tail.value}, length: {len(foo)}, str: {foo}')
+    foo.move_to_end(0)
+    print(f'head: {foo.head.value}, tail: {foo.tail.value}, length: {len(foo)}, str: {foo}')
+    foo.move_to_front(-1)
+    print(f'head: {foo.head.value}, tail: {foo.tail.value}, length: {len(foo)}, str: {foo}')
+    foo.remove_from_head()
+    print(f'head: {foo.head.value}, tail: {foo.tail.value}, length: {len(foo)}, str: {foo}')
+    foo.remove_from_tail()
+    print(f'head: {foo.head}, tail: {foo.tail}, length: {len(foo)}, str: {foo}')
+
+    bar = DoublyLinkedList(range(10_000_000))
+    for i in range(5):
+        print(f'{bar.get(5_000_000):,}')
+    for i in range(5):
+        print(f'{bar.get(-1):,}')
