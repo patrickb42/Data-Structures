@@ -15,11 +15,8 @@ class SinglyLinkedList:
             items_iter = iter(items)
             self.head = SinglyLinkedList._Node(next(items_iter))
             self.tail = self.head
-            current: SinglyLinkedList._Node = self.head
             for item in items_iter:
-                current.next_node = SinglyLinkedList._Node(item)
-                current = current.next_node
-            self.tail = current
+                self.add_to_tail(SinglyLinkedList._Node(item))
 
     def add_to_tail(self, item):
         if self.tail is not None:
@@ -34,14 +31,13 @@ class SinglyLinkedList:
         return needle in self
 
     def remove_head(self):
-        return_value = None
-        if self.head is not None:
-            return_value = self.head.value
-            self.head = self.head.next_node
-            self.length -= 1
-            if self.length < 2:
-                self.tail = self.head
-        return return_value
+        if self.head is None:
+            return None
+        self.head = self.head.next_node
+        self.length -= 1
+        if self.length < 2:
+            self.tail = self.head
+        return self.head.value
 
     def get_max(self):
         return max(self) if self.length > 0 else None
