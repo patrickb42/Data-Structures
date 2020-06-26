@@ -22,7 +22,7 @@ class BSTNode:
 
     def __str__(self):
         return str(list(self))
-    
+
     def __contains__(self, needle):
         return self.contains(needle)
 
@@ -65,6 +65,7 @@ class BSTNode:
             self.__searched_left = False
             self.__searched_right = False
             self.__current_node = head
+            self.__step
 
             if in_order:
                 self.__step = self.__step_in_order
