@@ -67,12 +67,16 @@ class BSTNode:
             self.__current_node = head
 
             if in_order:
+                self.__step = self.__step_in_order
                 self.__returned_head = False
-            if pre_order:
+            elif pre_order:
+                self.__step = self.__step_pre_order
                 self.__returned_last_value = False
-            if post_order:
+            elif post_order:
+                self.__step = self.__step_post_order
                 self.__post_order_head_returned = False
             elif breadth_first:
+                self.__step = self.__step_breadth_first
                 self.__node_queue = Queue()
                 self.__last_node_returned = False
 
@@ -80,14 +84,7 @@ class BSTNode:
             return self
 
         def __next__(self):
-            if self.__in_order:
-                return self.__step_in_order()
-            elif self.__pre_order:
-                return self.__step_pre_order()
-            elif self.__post_order:
-                return self.__step_post_order()
-            elif self.__breadth_first:
-                return self.__step_breadth_first()
+            return self.__step()
 
         def __go_left(self):
             self.__parents.append(self.__current_node)
