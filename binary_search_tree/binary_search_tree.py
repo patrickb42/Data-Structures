@@ -65,7 +65,6 @@ class BSTNode:
             self.__searched_left = False
             self.__searched_right = False
             self.__current_node = head
-            self.__step
 
             if in_order:
                 self.__step = self.__step_in_order
@@ -191,12 +190,18 @@ class BSTNode:
     # Return True if the tree contains the value
     # False if it does not
     def contains(self, needle):
-        if self.value == needle:
-            return True
-        elif needle < self.value:
-            return needle in self.left if self.left is not None else False
-        else:
-            return needle in self.right if self.right is not None else False
+        current_node = self
+        while True:
+            if needle == current_node.value:
+                return True
+            elif needle < current_node.value:
+                if current_node.left is None:
+                    return False
+                current_node = current_node.left
+            else:
+                if current_node.right is None:
+                    return False
+                current_node = current_node.right
 
     # Return the maximum value found in the tree
     def get_max(self):
